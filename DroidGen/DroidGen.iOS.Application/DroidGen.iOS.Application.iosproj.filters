@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DroidGen.iOS">
+      <UniqueIdentifier>{fa571226-56fb-4c9e-8856-5e06c92524db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DroidGen.iOS\Images.xcassets">
+      <UniqueIdentifier>{7da89677-165b-45d9-ba44-08a89443cef2}</UniqueIdentifier>
+      <Extensions>DroidGen.iOS\Images.xcassets\*</Extensions>
+    </Filter>
+    <Filter Include="DroidGen.iOS\Images.xcassets\AppIcon.appiconset">
+      <UniqueIdentifier>{6d54957d-cf41-44eb-aaf7-191e390c208a}</UniqueIdentifier>
+      <Extensions>DroidGen.iOS\Images.xcassets\AppIcon.appiconset\*</Extensions>
+    </Filter>
+    <Filter Include="DroidGen.iOS\Supporting Files">
+      <UniqueIdentifier>{ce80fb80-5a7d-4e2a-8068-7fd4a057aa84}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DroidGen.iOS\AppDelegate.m">
+      <Filter>DroidGen.iOS</Filter>
+    </ClCompile>
+    <ClCompile Include="DroidGen.iOS\GameViewController.m">
+      <Filter>DroidGen.iOS</Filter>
+    </ClCompile>
+    <ClCompile Include="DroidGen.iOS\main.m">
+      <Filter>DroidGen.iOS\Supporting Files</Filter>
+    </ClCompile>
+    <ClInclude Include="DroidGen.iOS\AppDelegate.h">
+      <Filter>DroidGen.iOS</Filter>
+    </ClInclude>
+    <ClInclude Include="DroidGen.iOS\GameViewController.h">
+      <Filter>DroidGen.iOS</Filter>
+    </ClInclude>
+    <Content Include="DroidGen.iOS\Base.lproj\Main.storyboard">
+      <Filter>DroidGen.iOS</Filter>
+    </Content>
+    <Content Include="DroidGen.iOS\Images.xcassets\AppIcon.appiconset\Contents.json">
+      <Filter>DroidGen.iOS\Images.xcassets\AppIcon.appiconset</Filter>
+    </Content>
+    <InfoPlist Include="DroidGen.iOS\Info.plist">
+      <Filter>DroidGen.iOS\Supporting Files</Filter>
+    </InfoPlist>
+  </ItemGroup>
+</Project>

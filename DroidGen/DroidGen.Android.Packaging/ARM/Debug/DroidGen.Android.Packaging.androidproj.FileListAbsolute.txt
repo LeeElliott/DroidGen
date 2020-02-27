@@ -1,0 +1,12 @@
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\DroidGen.Android.Packaging.androidprojAssemblyReference.cache
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\DroidGen.apk.recipe
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\DroidGen.apk.recipe.merged
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\FileStringReplace.incremental
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\DroidGen.apk
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\DroidGen.lastsuccessfuldeploy
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libDroidGen.so
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\Package\libs\armeabi-v7a\gdbserver
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libgnustl_static.a
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\Package\res\values\strings.xml
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\Package\project.properties
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\ARM\Debug\Package\build.xml

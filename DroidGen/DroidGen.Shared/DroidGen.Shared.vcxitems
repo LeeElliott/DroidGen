@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{4016a1e0-9576-4529-8038-c33b2ac3457a}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Button.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObjectGenerator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PerlinNoise.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RandomWalk.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureCalculator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Button.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Terrain.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectGenerator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceTool.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PerlinNoise.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RandomWalk.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureCalculator.h" />
+  </ItemGroup>
+</Project>

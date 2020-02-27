@@ -1,0 +1,1 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\Microsoft\MDD\iOS\V150\Common.targets(270,5): error MSB4044: The "VCRemoteBuild" task was not given a value for the required parameter "RemoteRootDirectory".

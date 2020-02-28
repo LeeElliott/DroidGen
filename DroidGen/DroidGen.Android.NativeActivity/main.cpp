@@ -273,6 +273,7 @@ void GenerateLevel()
 	ApplyHeights();
 	WaterTable();
 	PlaceObjects();
+	// Texturer();
 
 	performance.EndTimer();
 
@@ -611,6 +612,8 @@ void android_main(struct android_app* state) {
 
 		if (engine.animating) {
 			// Done with events; draw next animation frame.
+			GenerateLevel();
+			
 			for (int i = 0; i < tileCount * tileCount; i++)
 				terrains[i].Update();
 
@@ -622,8 +625,6 @@ void android_main(struct android_app* state) {
 			// Drawing is throttled to the screen update rate, so there
 			// is no need to do timing here.
 			engine_draw_frame(&engine);
-
-			GenerateLevel();
 		}
 	}
 }

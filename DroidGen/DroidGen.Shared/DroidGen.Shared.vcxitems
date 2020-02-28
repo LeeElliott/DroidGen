@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Button.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObjectMarker.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerlinNoise.cpp" />
@@ -23,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Button.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectMarker.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Terrain.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceTool.h" />

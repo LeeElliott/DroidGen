@@ -20,6 +20,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Button.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectMarker.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -44,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Button.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObjectMarker.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

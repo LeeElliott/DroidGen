@@ -27,6 +27,7 @@
 #include "PerlinNoise.h"
 #include "RandomWalk.h"
 #include "ObjectGenerator.h"
+#include "ObjectMarker.h"
 
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "AndroidProject1.NativeActivity", __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "AndroidProject1.NativeActivity", __VA_ARGS__))
@@ -63,6 +64,9 @@ struct engine {
 };
 const int tileCount = 511;
 std::vector<Terrain> terrains;
+std::vector<ObjectMarker> largeMarkers;
+std::vector<ObjectMarker> smallMarkers;
+std::vector<ObjectMarker> enemyMarkers;
 Terrain water;
 
 PerformanceTool performance;
@@ -76,11 +80,13 @@ int largeCount = 0;
 int smallCount = 0;
 int enemyCount = 0;
 int perimeterLimit = 8;
-int largeObjectData[45];
+int largeObjectData[60] = { 0 };
+int smallObjectData[70] = { 0 };
+int enemyData[30] = { 0 };
 float waterHeight;
 
 // For performance data
-int perfTimes[100] = { 0 };
+int perfTimes[250] = { 0 };
 int generationCount = 0;
 
 const int textureWidth = 512;
@@ -89,21 +95,6 @@ const int textureHeight = 512;
 float yDisplacement[textureWidth * textureHeight];
 int playableArea[textureWidth * textureHeight];
 
-/* Write to CSV */
-/* Used to output test data */
-void printCSV(int times[100])
-{
-	std::ofstream ofs("/sdcard/PerformanceData.csv");
-	if (ofs != NULL)
-	{
-		// for each row
-		for (int i = 0; i < 100; i++) 
-		{
-			ofs << times[i] << ',';
-		}
-		ofs.close();
-	}
-}
 /* Generate heightmap data using a Perlin style noise generator */
 /* Perform random walk algorithm to shape playable area */
 void CreateMap()
@@ -167,20 +158,17 @@ void GenerateObjects()
 	levelStatus = "Generating objects...";
 
 	// Pseudo-random number of large objects
-	largeCount = rand() % 5 + 10;
+	largeCount = rand() % 5 + 5;
 
 	// Pseudo-random number of large objects
-	smallCount = rand() % 16 + 20;
+	smallCount = rand() % 11 + 5;
 
 	// Pseudo-random number of enemy locations
 	enemyCount = rand() % 11 + 5;
 
 	// Generator creates the location data
 	generator.GenerateObjects(playableArea, yDisplacement, textureWidth, textureHeight, largeCount, smallCount, 
-		enemyCount, perimeterLimit, largeObjectData);
-
-	// Place objects using generated data
-
+		enemyCount, perimeterLimit, largeObjectData, smallObjectData, enemyData);
 }
 /* Height/gradient based texture application */
 /* Not currently implemented */
@@ -192,7 +180,7 @@ void Texturer()
 /* Not currently implemented */
 void WaterTable()
 {
-	wat/er.EditHeight(waterHeight);
+	water.EditHeight(waterHeight);
 }
 void ApplyHeights()
 {
@@ -214,11 +202,69 @@ void ApplyHeights()
 /* Using the generated coordinates */
 void PlaceObjects()
 {
-	po[]
+	int currentElem = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		if (largeObjectData[currentElem] == 0)
+		{
+			largeMarkers[i].SetActive(false);
+		}
+		else
+		{
+			int sizeX = largeObjectData[currentElem]; int sizeY = 32; int sizeZ = largeObjectData[currentElem + 1];
+			int posX = largeObjectData[currentElem + 2]; int posZ = largeObjectData[currentElem + 3];
+			int posY = yDisplacement[posZ * textureWidth + posX];
+
+			largeMarkers[i].SetPosition(0, tileCount, sizeX, sizeY, sizeZ, posX, posY, posZ);
+			largeMarkers[i].SetActive(true);
+		}
+		currentElem += 4;
+	}
+
+	currentElem = 0;
+	for (int i = 0; i < 15; i++)
+	{
+		if (smallObjectData[currentElem] == 0)
+		{
+			smallMarkers[i].SetActive(false);
+		}
+		else
+		{
+			int posX = smallObjectData[currentElem]; int posZ = smallObjectData[currentElem + 1];
+			int posY = yDisplacement[posZ * textureWidth + posX] + 5;
+
+			smallMarkers[i].SetPosition(1, tileCount, 8, 8, 8, posX, posY, posZ);
+			smallMarkers[i].SetActive(true);
+		}
+		currentElem += 2;
+	}
+
+	currentElem = 0;
+	for (int i = 0; i < 15; i++)
+	{
+		if (enemyData[currentElem] == 0)
+		{
+			enemyMarkers[i].SetActive(false);
+		}
+		else
+		{
+			int posX = enemyData[currentElem]; int posZ = enemyData[currentElem + 1];
+			int posY = yDisplacement[posZ * textureWidth + posX] + 5;
+
+			enemyMarkers[i].SetPosition(2, tileCount, 8, 8, 8, posX, posY, posZ);
+			enemyMarkers[i].SetActive(true);
+		}
+		currentElem += 2;
+	}
 }
 /* Initialize the generation algorithms */
 void GenerateLevel()
 {
+	// Reset temporary arrays
+	memset(largeObjectData, 0, sizeof(largeObjectData));
+	memset(smallObjectData, 0, sizeof(smallObjectData));
+	memset(enemyData, 0, sizeof(enemyData));
+
 	performance.StartTimer();
 
 	CreateMap();
@@ -230,14 +276,14 @@ void GenerateLevel()
 
 	performance.EndTimer();
 
-	if (generationCount < 100)
+	if (generationCount < 250)
 	{
 		perfTimes[generationCount] = performance.GetSeconds();
 		generationCount++;
 	}
 	else
 	{
-		int cheese = 250;
+		generationCount = 900;
 	}
 
 	// Update level status
@@ -335,9 +381,30 @@ static void engine_draw_frame(struct engine* engine) {
 
 	for (int i = 0; i < tileCount * tileCount; i++)
 	{
-		int terrainList = terrains.size();
 		terrains[i].Draw();
 	}
+	for (int i = 0; i < 10; i++)
+	{
+		if (largeMarkers[i].GetActive())
+		{
+			largeMarkers[i].Draw();
+		}
+	}
+	for (int i = 0; i < 15; i++)
+	{
+		if (smallMarkers[i].GetActive())
+		{
+			smallMarkers[i].Draw();
+		}
+	}
+	for (int i = 0; i < 15; i++)
+	{
+		if (enemyMarkers[i].GetActive())
+		{
+			enemyMarkers[i].Draw();
+		}
+	}
+
 	water.Draw();
 
 	eglSwapBuffers(engine->display, engine->surface);
@@ -363,7 +430,7 @@ static void engine_term_display(struct engine* engine) {
 	engine->context = EGL_NO_CONTEXT;
 	engine->surface = EGL_NO_SURFACE;
 
-	for (int i = 0; i < tileCount* tileCount; i++)
+	for (int i = 0; i < sizeof(terrains); i++)
 		terrains[i].TearDownGL();
 
 	water.TearDownGL();
@@ -479,6 +546,24 @@ void android_main(struct android_app* state) {
 			Terrain* tile = new Terrain(tileCount, i, j);
 			terrains.push_back(*tile);
 		}
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		ObjectMarker* marker = new ObjectMarker(0, 511, 32, 16, 32, 112, 0, 112);
+		marker->SetActive(false);
+		largeMarkers.push_back(*marker);
+	}
+	for (int i = 0; i < 15; i++)
+	{
+		ObjectMarker* marker = new ObjectMarker(1, 511, 8, 8, 8, 112, 0, 112);
+		marker->SetActive(false);
+		smallMarkers.push_back(*marker);
+	}
+	for (int i = 0; i < 15; i++)
+	{
+		ObjectMarker* marker = new ObjectMarker(2, 511, 8, 8, 8, 112, 0, 112);
+		marker->SetActive(false);
+		enemyMarkers.push_back(*marker);
 	}
 
 	water.SetPosition(1, 0, 0);

@@ -18,13 +18,19 @@ ObjectGenerator::~ObjectGenerator()
 }*/
 
 void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144], int w, int h, int lCount, int sCount, 
-	int eCount, int pLimit, int(&sizes)[45])
+	int eCount, int pLimit, int(&lData)[60], int(&sData)[70], int(&eData)[30])
 {
+	// Reset size array
+	for (int i = 0; i < 45; i++)
+	{
+		lData[i] = 0;
+	}
+
 	PerimeterMarking(map, w, h);
 	RemoveUnnecessary(map, w, h, 8);
-	LargeObjectGeneration(map, heights, w, h, lCount, sizes);
-	SmallObjectGeneration(map, w, h, sCount);
-	EnemyLocationGeneration(map, w, h, eCount);
+	LargeObjectGeneration(map, heights, w, h, lCount, lData);
+	SmallObjectGeneration(map, w, h, sCount, sData);
+	EnemyLocationGeneration(map, w, h, eCount, eData);
 }
 
  void ObjectGenerator::PerimeterMarking(int(&map)[262144], int w, int h)
@@ -129,22 +135,22 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 	 }
  }
 
- void ObjectGenerator::LargeObjectGeneration(int(&map)[262144], int w, int h, int lCount, int(&sizes)[30])
+ void ObjectGenerator::LargeObjectGeneration(int(&map)[262144], int w, int h, int lCount, int(&lData)[60])
  {
 	 // Pseudo-random number of large objects
-	 std::vector<int> objectSizes;
+	 std::vector<int> objectlData;
 
 	 for (int i = 0; i < lCount; i++)
 	 {
-		 objectSizes.push_back((rand() % 128 + 48) / 2);
-		 objectSizes.push_back((rand() % 128 + 48) / 2);
+		 objectlData.push_back((rand() % 128 + 48) / 2);
+		 objectlData.push_back((rand() % 128 + 48) / 2);
 	 }
 	
 	 // Required to prevent extended hang
 	 int attemptCounter = 0;
 	 
 	 // Loop until size vector is empty
-	 while (!objectSizes.empty())
+	 while (!objectlData.empty())
 	 {
 		 // Pseudo-random coordinates
 		 int x = rand() % 512;
@@ -154,14 +160,14 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 		 if (map[y * w + x] == 1)
 		 {
 			 // Check if object can fit
-			 if (ProximityCheck(map, w, h, x, y, objectSizes[objectSizes.size() - 2],
-				 objectSizes[objectSizes.size() - 1]))
+			 if (ProximityCheck(map, w, h, x, y, objectlData[objectlData.size() - 2],
+				 objectlData[objectlData.size() - 1]))
 			 {
 				 // Function marks area
-				 MarkArea(map, w, h, x, y, objectSizes[objectSizes.size() - 2], objectSizes[objectSizes.size() - 1], -2);
-				 // Pop the two sizes
-				 objectSizes.pop_back();
-				 objectSizes.pop_back();
+				 MarkArea(map, w, h, x, y, objectlData[objectlData.size() - 2], objectlData[objectlData.size() - 1], -2);
+				 // Pop the two lData
+				 objectlData.pop_back();
+				 objectlData.pop_back();
 				 // Reset attempt counter
 				 attemptCounter = 0;
 			 }
@@ -173,22 +179,22 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 				 // Give up if tried too many times
 				 if (attemptCounter > 500)
 				 {
-					 // Discard remaining sizes from vector
-					 objectSizes.clear();
+					 // Discard remaining lData from vector
+					 objectlData.clear();
 				 }
 			 }
 		 }
 	 }
  }
 
- void ObjectGenerator::LargeObjectGeneration(int(&map)[262144], float(&heights)[262144], int w, int h, int lCount, int(&sizes)[45])
+ void ObjectGenerator::LargeObjectGeneration(int(&map)[262144], float(&heights)[262144], int w, int h, int lCount, int(&lData)[60])
  {
 	 // Pseudo-random number of large objects
-	 std::vector<int> objectSizes;
+	 std::vector<int> objectlData;
 
 	 for (int i = 0; i < 45; i++)
 	 {
-		 sizes[i] = -1;
+		 lData[i] = -1;
 	 }
 
 	 int elem = 0;
@@ -199,102 +205,113 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 		 {
 		 default :
 			 // Set width
-			 objectSizes.push_back(16);
+			 objectlData.push_back(16);
 			 // Set depth
-			 objectSizes.push_back(16);
+			 objectlData.push_back(16);
 			 // Set object to draw
-			 sizes[elem] = 0;
-			 elem += 3;
+			 lData[elem] = 16;
+			 lData[elem + 1] = 16;
+			 elem += 4;
 			 break;
 		 case 1:
 			 // Set width
-			 objectSizes.push_back(32);
+			 objectlData.push_back(32);
 			 // Set depth
-			 objectSizes.push_back(16);
+			 objectlData.push_back(16);
 			 // Set object to draw
-			 sizes[elem] = 1;
-			 elem += 3;
+			 lData[elem] = 32;
+			 lData[elem + 1] = 16;
+			 elem += 4;
 			 break;
 		 case 2:
 			 // Set width
-			 objectSizes.push_back(16);
+			 objectlData.push_back(16);
 			 // Set depth
-			 objectSizes.push_back(32);
+			 objectlData.push_back(32);
 			 // Set object to draw
-			 sizes[elem] = 2;
-			 elem += 3;
+			 lData[elem] = 16;
+			 lData[elem + 1] = 32;
+			 elem += 4;
 			 break;
 		 case 3:
 			 // Set width
-			 objectSizes.push_back(16);
+			 objectlData.push_back(16);
 			 // Set depth
-			 objectSizes.push_back(64);
+			 objectlData.push_back(64);
 			 // Set object to draw
-			 sizes[elem] = 1;
-			 elem += 3;
+			 lData[elem] = 32;
+			 lData[elem + 1] = 32;
+			 elem += 4;
 			 break;
 		 case 4:
 			 // Set width
-			 objectSizes.push_back(64);
+			 objectlData.push_back(64);
 			 // Set depth
-			 objectSizes.push_back(16);
+			 objectlData.push_back(16);
 			 // Set object to draw
-			 sizes[elem] = 1;
-			 elem += 3;
+			 lData[elem] = 64;
+			 lData[elem + 1] = 16;
+			 elem += 4;
 			 break;
 		 case 5:
 			 // Set width
-			 objectSizes.push_back(32);
+			 objectlData.push_back(32);
 			 // Set depth
-			 objectSizes.push_back(32);
+			 objectlData.push_back(32);
 			 // Set object to draw
-			 sizes[elem] = 3;
-			 elem += 3;
+			 lData[elem] = 32;
+			 lData[elem + 1] = 32;
+			 elem += 4;
 			 break;
 		 case 6:
 			 // Set width
-			 objectSizes.push_back(64);
+			 objectlData.push_back(64);
 			 // Set depth
-			 objectSizes.push_back(32);
+			 objectlData.push_back(32);
 			 // Set object to draw
-			 sizes[elem] = 4;
-			 elem += 3;
+			 lData[elem] = 64;
+			 lData[elem + 1] = 32;
+			 elem += 4;
 			 break;
 		 case 7:
 			 // Set width
-			 objectSizes.push_back(32);
+			 objectlData.push_back(32);
 			 // Set depth
-			 objectSizes.push_back(64);
+			 objectlData.push_back(64);
 			 // Set object to draw
-			 sizes[elem] = 5;
-			 elem += 3;
+			 lData[elem] = 32;
+			 lData[elem + 1] = 64;
+			 elem += 4;
 			 break;
 		 case 8:
 			 // Set width
-			 objectSizes.push_back(64);
+			 objectlData.push_back(64);
 			 // Set depth
-			 objectSizes.push_back(64);
+			 objectlData.push_back(64);
 			 // Set object to draw
-			 sizes[elem] = 1;
-			 elem += 3;
+			 lData[elem] = 64;
+			 lData[elem + 1] = 64;
+			 elem += 4;
 			 break;
 		 case 9:
 			 // Set width
-			 objectSizes.push_back(96);
+			 objectlData.push_back(96);
 			 // Set depth
-			 objectSizes.push_back(64);
+			 objectlData.push_back(64);
 			 // Set object to draw
-			 sizes[elem] = 1;
-			 elem += 3;
+			 lData[elem] = 96;
+			 lData[elem + 1] = 64;
+			 elem += 4;
 			 break;
 		 case 10:
 			 // Set width
-			 objectSizes.push_back(96);
+			 objectlData.push_back(96);
 			 // Set depth
-			 objectSizes.push_back(32);
+			 objectlData.push_back(32);
 			 // Set object to draw
-			 sizes[elem] = 1;
-			 elem += 3;
+			 lData[elem] = 96;
+			 lData[elem + 1] = 32;
+			 elem += 4;
 			 break;
 		 }		 
 		 
@@ -304,7 +321,7 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 	 int attemptCounter = 0;
 	 int nextElem = 2;
 	 // Loop until size vector is empty
-	 while (!objectSizes.empty())
+	 while (!objectlData.empty())
 	 {
 		 // Pseudo-random coordinates
 		 int x = rand() % 512;
@@ -314,19 +331,19 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 		 if (map[y * w + x] == 1)
 		 {
 			 // Check if object can fit also using slope
-			 if (GradientCheck(map, heights, w, h, x, y, objectSizes[objectSizes.size() - 2],
-				 objectSizes[objectSizes.size() - 1]))
+			 if (GradientCheck(map, heights, w, h, x, y, objectlData[objectlData.size() - 2],
+				 objectlData[objectlData.size() - 1]))
 			 {
 				 // Function marks area
-				 MarkArea(map, w, h, x, y, objectSizes[objectSizes.size() - 2], objectSizes[objectSizes.size() - 1], -2);
+				 MarkArea(map, w, h, x, y, objectlData[objectlData.size() - 2], objectlData[objectlData.size() - 1], -2);
 
-				 // Pop the two sizes
-				 objectSizes.pop_back();
-				 objectSizes.pop_back();
+				 // Pop the two lData
+				 objectlData.pop_back();
+				 objectlData.pop_back();
 				 // Reset attempt counter
 				 attemptCounter = 0;
-				 sizes[nextElem] = x;
-				 sizes[nextElem + 1] = y;
+				 lData[nextElem] = x;
+				 lData[nextElem + 1] = y;
 				 nextElem += 4;
 			 }
 			 else
@@ -337,21 +354,22 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 				 // Give up if tried too many times
 				 if (attemptCounter > 500)
 				 {
-					 // Discard remaining sizes from vector
-					 objectSizes.clear();
+					 // Discard remaining lData from vector
+					 objectlData.clear();
 				 }
 			 }
 		 }
 	 }
  }
 
- void ObjectGenerator::SmallObjectGeneration(int(&map)[262144], int w, int h, int sCount)
+ void ObjectGenerator::SmallObjectGeneration(int(&map)[262144], int w, int h, int sCount, int(&sData)[70])
  {
+	 int counter = 0;
 	 // Loop until all objects placed
 	 for (int k = 0; k < sCount; k++)
 	 {
 		 bool siteChosen = false;
-		 // Loop until object is successfully positioned
+		 // Loop until object is successfully positioned		 
 		 while (!siteChosen)
 		 {
 			 // Pseudo-random coordinates
@@ -366,13 +384,18 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 
 				 // Place holder goes here
 				 MarkArea(map, w, h, x, y, 8, 8, -4);
+
+				 sData[counter] = x;
+				 sData[counter + 1] = y;
+				 counter += 2;
 			 }
 		 }
 	 }
  }
 
- void ObjectGenerator::EnemyLocationGeneration(int(&map)[262144], int w, int h, int eCount)
+ void ObjectGenerator::EnemyLocationGeneration(int(&map)[262144], int w, int h, int eCount, int(&eData)[30])
  {
+	 int counter = 0;
 	 // Loop until all enemy locations placed
 	 for (int k = 0; k < eCount; k++)
 	 {
@@ -392,6 +415,10 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 
 				 // Place holder goes here
 				 MarkArea(map, w, h, x, y, 8, 8, -3);
+
+				 eData[counter] = x;
+				 eData[counter + 1] = y;
+				 counter += 2;
 			 }
 		 }
 	 }
@@ -452,7 +479,7 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 			 float angleY = atan2(y4 - y3, x4 - x3) * 180 / 3.14159265;
 
 			 // If angle is over tolerable value
-			 if (angleX > 30 || angleY > 30)
+			 if (angleX > 15 || angleY > 15)
 			 {
 				 // Check failed
 				 return false;

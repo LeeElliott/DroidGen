@@ -1,21 +1,7 @@
 #include "Terrain.h"
 
 float _rotation;
-int one;
 int limit = 0x40000;
-
-GLint colors[4][4] =
-{
-    { 0x00000, 0x10000, 0x00000, 0x10000 },
-    { 0x00000, 0x10000, 0x00000, 0x10000 },
-    { 0x00000, 0x10000, 0x00000, 0x10000 },
-    { 0x00000, 0x10000, 0x00000, 0x10000 }
-};
-
-GLubyte indices[] =
-{
-    0, 1, 2,    3, 0, 2
-};
 
 Terrain::Terrain()
 {

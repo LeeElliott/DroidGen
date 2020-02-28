@@ -20,6 +20,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include <string>
+#include <fstream>
 
 #include "Terrain.h"
 #include "PerformanceTool.h"
@@ -62,6 +63,8 @@ struct engine {
 };
 const int tileCount = 511;
 std::vector<Terrain> terrains;
+Terrain water;
+
 PerformanceTool performance;
 PerlinNoise perlin;
 RandomWalk walker;
@@ -74,6 +77,11 @@ int smallCount = 0;
 int enemyCount = 0;
 int perimeterLimit = 8;
 int largeObjectData[45];
+float waterHeight;
+
+// For performance data
+int perfTimes[100] = { 0 };
+int generationCount = 0;
 
 const int textureWidth = 512;
 const int textureHeight = 512;
@@ -81,6 +89,21 @@ const int textureHeight = 512;
 float yDisplacement[textureWidth * textureHeight];
 int playableArea[textureWidth * textureHeight];
 
+/* Write to CSV */
+/* Used to output test data */
+void printCSV(int times[100])
+{
+	std::ofstream ofs("/sdcard/PerformanceData.csv");
+	if (ofs != NULL)
+	{
+		// for each row
+		for (int i = 0; i < 100; i++) 
+		{
+			ofs << times[i] << ',';
+		}
+		ofs.close();
+	}
+}
 /* Generate heightmap data using a Perlin style noise generator */
 /* Perform random walk algorithm to shape playable area */
 void CreateMap()
@@ -135,7 +158,7 @@ void CombineMap()
 	}
 
 	// Calculate water level
-	float waterHeight = averageHeight * 0.8;
+	waterHeight = averageHeight * 0.4;
 }
 /* Generate multiple types of object into the world space */
 void GenerateObjects()
@@ -169,7 +192,29 @@ void Texturer()
 /* Not currently implemented */
 void WaterTable()
 {
+	wat/er.EditHeight(waterHeight);
+}
+void ApplyHeights()
+{
+	for (int j = 0; j < tileCount; j++)
+	{
+		for (int i = 0; i < tileCount; i++)
+		{
+			float aDisp = yDisplacement[j * textureWidth + i]; 
+			float bDisp = yDisplacement[j * textureWidth + (i + 1)];
+			float cDisp = yDisplacement[(j + 1) * textureWidth + (i + 1)];
+			float dDisp = yDisplacement[(j + 1) * textureWidth + i];
 
+			terrains[j * tileCount + i].EditHeights(aDisp, bDisp, cDisp, dDisp);
+		}
+	}
+}
+/* Place Objects */
+/* Used to place representations of spawned objects */
+/* Using the generated coordinates */
+void PlaceObjects()
+{
+	po[]
 }
 /* Initialize the generation algorithms */
 void GenerateLevel()
@@ -179,7 +224,21 @@ void GenerateLevel()
 	CreateMap();
 	CombineMap();
 	GenerateObjects();
+	ApplyHeights();
+	WaterTable();
+	PlaceObjects();
+
 	performance.EndTimer();
+
+	if (generationCount < 100)
+	{
+		perfTimes[generationCount] = performance.GetSeconds();
+		generationCount++;
+	}
+	else
+	{
+		int cheese = 250;
+	}
 
 	// Update level status
 	levelStatus = "Generation complete...";
@@ -245,10 +304,9 @@ static int engine_init_display(struct engine* engine) {
 	engine->state.angle = 0;
 
 	// Initialize GL state.
-	// Initialize GL state.
 	glDisable(GL_DITHER);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-	glClearColor(0.1f, 0.3f, 0.1f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 	glEnable(GL_CULL_FACE);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
@@ -280,6 +338,7 @@ static void engine_draw_frame(struct engine* engine) {
 		int terrainList = terrains.size();
 		terrains[i].Draw();
 	}
+	water.Draw();
 
 	eglSwapBuffers(engine->display, engine->surface);
 }
@@ -306,6 +365,8 @@ static void engine_term_display(struct engine* engine) {
 
 	for (int i = 0; i < tileCount* tileCount; i++)
 		terrains[i].TearDownGL();
+
+	water.TearDownGL();
 }
 
 /**
@@ -333,7 +394,7 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event) 
 
 void DrawGUI()
 {
-	ImGui::Text("FPS:");
+	//ImGui::Text("FPS:");
 }
 
 
@@ -420,12 +481,8 @@ void android_main(struct android_app* state) {
 		}
 	}
 
-	// TEMP
-	int zero = terrains[0].GetPosition(1, 1);
-	int one = terrains[1].GetPosition(1, 1);
-	int two = terrains[2].GetPosition(1, 1);
-	int three = terrains[3].GetPosition(1, 1);
-
+	water.SetPosition(1, 0, 0);
+	
 	engine.animating = 1;
 
 	// loop waiting for stuff to do.
@@ -471,6 +528,8 @@ void android_main(struct android_app* state) {
 			// Done with events; draw next animation frame.
 			for (int i = 0; i < tileCount * tileCount; i++)
 				terrains[i].Update();
+
+			water.Update();
 			//if (engine.state.angle > 1) {
 			//	engine.state.angle = 0;
 			//}
@@ -479,6 +538,7 @@ void android_main(struct android_app* state) {
 			// is no need to do timing here.
 			engine_draw_frame(&engine);
 
+			GenerateLevel();
 		}
 	}
 }

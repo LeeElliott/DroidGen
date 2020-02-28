@@ -6,10 +6,10 @@ int limit = 0x40000;
 
 GLint colors[4][4] =
 {
-    { 0x10000, 0x10000, 0x10000, 0x10000 },
-    { 0x10000, 0x10000, 0x10000, 0x10000 },
-    { 0x10000, 0x10000, 0x10000, 0x10000 },
-    { 0x10000, 0x10000, 0x10000, 0x10000 }
+    { 0x00000, 0x10000, 0x00000, 0x10000 },
+    { 0x00000, 0x10000, 0x00000, 0x10000 },
+    { 0x00000, 0x10000, 0x00000, 0x10000 },
+    { 0x00000, 0x10000, 0x00000, 0x10000 }
 };
 
 GLubyte indices[] =
@@ -99,9 +99,30 @@ void Terrain::Draw()
 	
 }
 
-void Terrain::EditHeights(float(&map)[262144])
+void Terrain::EditHeight(float disp)
 {
+	vertices[0][1] = -limit + (disp * (limit / 5));
+	vertices[1][1] = -limit + (disp * (limit / 5));
+	vertices[2][1] = -limit + (disp * (limit / 5));
+	vertices[3][1] = -limit + (disp * (limit / 5));
 
+	colors[0][2] = 0x10000;
+	colors[1][2] = 0x10000;
+	colors[2][2] = 0x10000;
+	colors[3][2] = 0x10000;
+}
+
+void Terrain::EditHeights(float aDisp, float bDisp, float cDisp, float dDisp)
+{
+	vertices[0][1] = -limit +(aDisp * (limit / 5));
+	vertices[1][1] = -limit +(bDisp * (limit / 5));
+	vertices[2][1] = -limit +(cDisp * (limit / 5));
+	vertices[3][1] = -limit +(dDisp * (limit / 5));
+
+	colors[0][1] = 0x10000 * aDisp;
+	colors[1][1] = 0x10000 * bDisp;
+	colors[2][1] = 0x10000 * cDisp;
+	colors[3][1] = 0x10000 * dDisp;
 }
 
 void Terrain::SetPosition(int res, int xPos, int yPos)
@@ -121,4 +142,6 @@ void Terrain::SetPosition(int res, int xPos, int yPos)
 
 	vertices[3][0] = -limit + (xPos * off);
 	vertices[3][2] = -limit + ((yPos + 1) * off);
+
+	indices[0] = 0; indices[1] = 1; indices[2] = 2; indices[3] = 3; indices[4] = 0; indices[5] = 2;
 }

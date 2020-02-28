@@ -3,25 +3,11 @@
   JAVA_HOME=C:\Program Files\Android\jdk\microsoft_dist_openjdk_1.8.0.25
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r15c
   main.cpp
-main.cpp(138,8): warning : unused variable 'waterHeight' [-Wunused-variable]
-          float waterHeight = averageHeight * 0.8;
-                ^
-main.cpp(280,7): warning : unused variable 'terrainList' [-Wunused-variable]
+main.cpp(231,7): warning : unused variable 'cheese' [-Wunused-variable]
+                  int cheese = 250;
+                      ^
+main.cpp(329,7): warning : unused variable 'terrainList' [-Wunused-variable]
                   int terrainList = terrains.size();
                       ^
-main.cpp(427,6): warning : unused variable 'three' [-Wunused-variable]
-          int three = terrains[3].GetPosition(1, 1);
-              ^
-main.cpp(424,6): warning : unused variable 'zero' [-Wunused-variable]
-          int zero = terrains[0].GetPosition(1, 1);
-              ^
-main.cpp(426,6): warning : unused variable 'two' [-Wunused-variable]
-          int two = terrains[2].GetPosition(1, 1);
-              ^
-main.cpp(425,6): warning : unused variable 'one' [-Wunused-variable]
-          int one = terrains[1].GetPosition(1, 1);
-              ^
-  6 warnings generated.
-   undefined reference to 'ImGui::Text(char const*, ...)'
-  clang.exe: error: linker command failed with exit code 1 (use -v to see invocation)
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Application Type\Android\3.0\Android.Common.targets(104,5): error MSB6006: "clang.exe" exited with code 1.
+  2 warnings generated.
+  DroidGen.Android.NativeActivity.vcxproj -> C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\x86\Debug\libDroidGen.so

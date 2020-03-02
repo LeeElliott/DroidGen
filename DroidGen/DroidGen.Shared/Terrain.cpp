@@ -60,8 +60,7 @@ void Terrain::TearDownGL()
 
 void Terrain::Update()
 {
-	_rotation = 1.f;
-	//_rotation -= 1.f;
+	_rotation -= 1.f;
 }
 void Terrain::Prepare()
 {
@@ -73,7 +72,8 @@ void Terrain::Draw()
 	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(0, 0, -8.0f);
-    glRotatef(_rotation * 0.25f, 1, 0, 0);  // X
+	//glRotatef(_rotation * 0.25f, 0, 1, 0); // Y
+    glRotatef(0.5f, 0, 0, 1);  // Z
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);

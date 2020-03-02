@@ -18,7 +18,7 @@ ObjectGenerator::~ObjectGenerator()
 }*/
 
 void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144], int w, int h, int lCount, int sCount, 
-	int eCount, int pLimit, int(&lData)[60], int(&sData)[70], int(&eData)[30])
+	int eCount, int pLimit, int(&lData)[60], int(&sData)[70], int(&eData)[30], float water)
 {
 	// Reset size array
 	for (int i = 0; i < 45; i++)
@@ -28,7 +28,7 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 
 	PerimeterMarking(map, w, h);
 	RemoveUnnecessary(map, w, h, 8);
-	LargeObjectGeneration(map, heights, w, h, lCount, lData);
+	LargeObjectGeneration(map, heights, w, h, lCount, lData, water);
 	SmallObjectGeneration(map, w, h, sCount, sData);
 	EnemyLocationGeneration(map, w, h, eCount, eData);
 }
@@ -187,7 +187,8 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 	 }
  }
 
- void ObjectGenerator::LargeObjectGeneration(int(&map)[262144], float(&heights)[262144], int w, int h, int lCount, int(&lData)[60])
+ void ObjectGenerator::LargeObjectGeneration(int(&map)[262144], float(&heights)[262144], int w, int h, 
+	 int lCount, int(&lData)[60], float water)
  {
 	 // Pseudo-random number of large objects
 	 std::vector<int> objectlData;
@@ -332,7 +333,7 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 		 {
 			 // Check if object can fit also using slope
 			 if (GradientCheck(map, heights, w, h, x, y, objectlData[objectlData.size() - 2],
-				 objectlData[objectlData.size() - 1]))
+				 objectlData[objectlData.size() - 1], water))
 			 {
 				 // Function marks area
 				 MarkArea(map, w, h, x, y, objectlData[objectlData.size() - 2], objectlData[objectlData.size() - 1], -2);
@@ -352,7 +353,7 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 				 attemptCounter++;
 
 				 // Give up if tried too many times
-				 if (attemptCounter > 500)
+				 if (attemptCounter > 5000)
 				 {
 					 // Discard remaining lData from vector
 					 objectlData.clear();
@@ -453,7 +454,8 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 	 return true;
  }
 
- bool ObjectGenerator::GradientCheck(int(&map)[262144], float(&heights)[262144], int tw, int th, int x, int y, int w, int h)
+ bool ObjectGenerator::GradientCheck(int(&map)[262144], float(&heights)[262144], int tw, int th, int x, int y, 
+	 int w, int h, float water)
  {
 	 // Add buffer to object dimensions
 	 int width = w + 4; int height = h + 4;
@@ -482,6 +484,11 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 			 if (angleX > 15 || angleY > 15)
 			 {
 				 // Check failed
+				 return false;
+			 }
+
+			 if (heights[y * tw + x] <= water)
+			 {
 				 return false;
 			 }
 

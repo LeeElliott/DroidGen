@@ -40,8 +40,7 @@ void ObjectMarker::TearDownGL()
 
 void ObjectMarker::Update()
 {
-	rotation = 1.f;
-	//_rotation -= 1.f;
+	rotation -= 1.f;
 }
 void ObjectMarker::Prepare()
 {
@@ -53,7 +52,8 @@ void ObjectMarker::Draw()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslatef(0, 0, -8.0f);
-	glRotatef(rotation * 0.25f, 1, 0, 0);  // X
+	//glRotatef(rotation * 0.25f, 0, 1, 0); // Y
+	glRotatef(0.5f, 0, 0, 1);  // Z
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -95,6 +95,9 @@ void ObjectMarker::SetPosition(int type, int res, int sizeX, int sizeY, int size
 {
 	// Get the offset value
 	float off = (2 * limits) / res;
+	
+	// TEMPORARY
+	sizeY = 64;
 
 	// Set x and z position
 	vertices[0][0] = -limits + ((xPos - (sizeX / 2)) * off);

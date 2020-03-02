@@ -112,6 +112,8 @@ void CreateMap()
 	walker.Walk(playableArea);
 }
 /* Combine the two generated maps */
+/* Calculate the average terrain height */
+/* Calculate the desired water height */
 void CombineMap()
 {
 	// Update level status
@@ -151,7 +153,8 @@ void CombineMap()
 	// Calculate water level
 	waterHeight = averageHeight * 0.4;
 }
-/* Generate multiple types of object into the world space */
+/* Generate coordinate data for multiple objevt types */
+/* To populate the world space */
 void GenerateObjects()
 {
 	// Update level status
@@ -168,7 +171,7 @@ void GenerateObjects()
 
 	// Generator creates the location data
 	generator.GenerateObjects(playableArea, yDisplacement, textureWidth, textureHeight, largeCount, smallCount, 
-		enemyCount, perimeterLimit, largeObjectData, smallObjectData, enemyData);
+		enemyCount, perimeterLimit, largeObjectData, smallObjectData, enemyData, waterHeight);
 }
 /* Height/gradient based texture application */
 /* Not currently implemented */
@@ -177,7 +180,7 @@ void Texturer()
 
 }
 /* Generate "water" at the determined height */
-/* Not currently implemented */
+/* Minimal implementation */
 void WaterTable()
 {
 	water.EditHeight(waterHeight);
@@ -451,21 +454,13 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event) 
 
 		if (engine->state.x < 200 && engine->state.y < 200)
 		{
-
+			LOGI("Touch and drag registered");
 		}
-		LOGI("Touch and drag registered");
-
+		
 		return 1;
 	}
 	return 0;
 }
-
-void DrawGUI()
-{
-	//ImGui::Text("FPS:");
-}
-
-
 
 /**
 * Process the next main command.
@@ -610,17 +605,27 @@ void android_main(struct android_app* state) {
 			}
 		}
 
+		
+
+		//GenerateLevel();
+
 		if (engine.animating) {
 			// Done with events; draw next animation frame.
+
+			// Call generation
+			// To be moved to tap event
 			GenerateLevel();
 			
+			// Call update functions
 			for (int i = 0; i < tileCount * tileCount; i++)
 				terrains[i].Update();
-
+			for (int i = 0; i < 10; i++)
+				largeMarkers[i].Update();
+			for (int i = 0; i < 15; i++)
+				smallMarkers[i].Update();
+			for (int i = 0; i < 15; i++)
+				enemyMarkers[i].Update();
 			water.Update();
-			//if (engine.state.angle > 1) {
-			//	engine.state.angle = 0;
-			//}
 
 			// Drawing is throttled to the screen update rate, so there
 			// is no need to do timing here.

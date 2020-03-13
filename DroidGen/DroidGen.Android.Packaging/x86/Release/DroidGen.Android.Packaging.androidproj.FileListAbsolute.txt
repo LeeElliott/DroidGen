@@ -1,0 +1,7 @@
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\x86\Release\DroidGen.Android.Packaging.androidprojAssemblyReference.cache
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\x86\Release\DroidGen.apk.recipe
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\x86\Release\DroidGen.apk.recipe.merged
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\x86\Release\FileStringReplace.incremental
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\x86\Release\DroidGen.apk
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\x86\Release\DroidGen.lastsuccessfuldeploy
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.Packaging\x86\Release\Package\libs\x86\libDroidGen.so

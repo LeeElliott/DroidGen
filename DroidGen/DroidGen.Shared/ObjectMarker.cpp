@@ -51,7 +51,6 @@ void ObjectMarker::Draw()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0, 0, -5.2);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);

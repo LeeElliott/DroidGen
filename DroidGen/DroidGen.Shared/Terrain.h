@@ -24,7 +24,7 @@ public:
 	void Update();
 	void Prepare();
 	void Draw();
-	void EditHeights(float(&heights)[256]);
+	void EditHeights(float(&heights)[256], float path);
 	void SetPosition(int resolution, int xPos, int zPos);
 	GLint GetPosition(int a, int b) { return vertices[a][b]; }
 

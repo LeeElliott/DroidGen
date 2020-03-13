@@ -209,9 +209,13 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <AdditionalOptions>
       </AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.17134.0\winrt;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.17134.0\shared;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;$(solutionDir)\include\glew\include\GL;$(solutionDir)\include\imGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CppLanguageStandard>gnu++1z</CppLanguageStandard>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;</LibraryDependencies>
+      <AdditionalOptions>-lm</AdditionalOptions>
+      <AdditionalLibraryDirectories>C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.17134.0\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

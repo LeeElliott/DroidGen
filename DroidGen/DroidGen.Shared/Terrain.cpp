@@ -55,6 +55,7 @@ void Terrain::Draw()
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
+	glPointSize(10);
 
     glFrontFace(GL_CW);
     glVertexPointer(3, GL_FIXED, 0, vertices);
@@ -62,12 +63,22 @@ void Terrain::Draw()
 	glDrawElements(GL_TRIANGLES, 1350, GL_UNSIGNED_BYTE, indices);
 }
 
-void Terrain::EditHeights(float(&heights)[256])
+void Terrain::EditHeights(float(&heights)[256], float path)
 {
 	for (int i = 0; i < 256; i++)
 	{
-		vertices[i][1] = -limit + (heights[i] * (limit / 5));
-		colors[0][1] = 0x10000 * heights[i];
+		vertices[i][1] = -limit + (heights[i] * (limit / 3));
+
+		if (heights[i] <= path)
+		{
+			colors[0][0] = 0xA500 * heights[i];
+			colors[0][1] = 0x2A00 * heights[i];
+			colors[0][2] = 0x2A00 * heights[i];
+		}
+		else
+		{
+			colors[0][1] = 0x10000 * heights[i];
+		}
 	}	
 }
 
@@ -84,7 +95,7 @@ void Terrain::SetPosition(int res, int xPos, int zPos)
 		for (int i = 0; i < 16; i++)
 		{
 			vertices[j * 16 + i][0] = -limit + ((myX + i) * off);
-			vertices[j * 16 + i][1] = -limit;
+			vertices[j * 16 + i][1] = -limit + 10;
 			vertices[j * 16 + i][2] = -limit + ((myZ + j) * off);	
 
 			colors[j * 16 + i][0] = 0x00000;
@@ -103,8 +114,8 @@ void Terrain::SetPosition(int res, int xPos, int zPos)
 			indices[n + 2] = (j + 1) * 16 + i;
 					
 			indices[n + 3] = (j + 1) * 16 + (i + 1);
-			indices[n + 4] = j * 16 + i;
-			indices[n + 5] = (j + 1) * 16 + i;
+			indices[n + 4] = (j + 1) * 16 + i;
+			indices[n + 5] = j * 16 + (i + 1);
 			n += 6;
 		}
 	}

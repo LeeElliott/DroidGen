@@ -60,7 +60,7 @@ struct engine {
 	int32_t height;
 	struct saved_state state;
 };
-const int chunkCount = 33;
+const int chunkCount = 34;
 std::vector<Terrain> terrains;
 std::vector<ObjectMarker> largeMarkers;
 std::vector<ObjectMarker> smallMarkers;
@@ -81,7 +81,9 @@ int perimeterLimit = 8;
 int largeObjectData[60] = { 0 };
 int smallObjectData[70] = { 0 };
 int enemyData[30] = { 0 };
+float averageHeight = 0.0f;
 float waterHeight;
+bool canGen = true;
 
 // For performance data
 int perfTimes[250] = { 0 };
@@ -89,6 +91,7 @@ int generationCount = 0;
 
 // Camera variables
 float cameraX = 0;
+float cameraY = 0;
 float cameraZ = 0;
 float cameraRotation = 0;
 
@@ -123,7 +126,7 @@ void CombineMap()
 	levelStatus = "Combining maps...";
 
 	// Get average height
-	float averageHeight = 0.0f;
+	
 	int counter = 0;
 
 	for (int j = 0; j < textureHeight; j++)
@@ -208,7 +211,7 @@ void ApplyHeights()
 				}
 			}
 
-			terrains[j * chunkCount + i].EditHeights(heights);
+			terrains[j * chunkCount + i].EditHeights(heights, averageHeight);
 		}
 	}
 }
@@ -378,7 +381,8 @@ static int engine_init_display(struct engine* engine) {
 	GLfloat ratio = (GLfloat)w / h;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glTranslatef(0, 0, 0);
+	glTranslatef(cameraX, cameraY, cameraZ);
+	/*glRotatef(cameraRotation, 0, 1, 0);*/
 	glFrustumf(-ratio, ratio, -1, 1, 0.5, 20);
 
 	return 0;
@@ -395,7 +399,7 @@ static void engine_draw_frame(struct engine* engine) {
 	}
 
 	// Prepare
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (int i = 0; i < chunkCount * chunkCount; i++)
 	{
@@ -466,9 +470,14 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event) 
 
 		int32_t AMotionEvent_getAction(const AInputEvent *motion_event);
 
-		if (engine->state.x < 200 && engine->state.y < 200)
+		if (AMotionEvent_getAction(event) == AMOTION_EVENT_ACTION_DOWN && canGen)
 		{
-			LOGI("Touch and drag registered");
+			GenerateLevel();
+			canGen = false;
+		}
+		else if (AMotionEvent_getAction(event) == AMOTION_EVENT_ACTION_UP)
+		{
+			canGen = true;
 		}
 		
 		return 1;
@@ -581,7 +590,7 @@ void android_main(struct android_app* state) {
 	engine.animating = 1;
 
 	// loop waiting for stuff to do.
-	GenerateLevel();
+	//GenerateLevel();
 
 	while (1) {
 		// Read all pending events.

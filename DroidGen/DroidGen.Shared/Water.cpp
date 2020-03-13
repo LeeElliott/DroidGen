@@ -48,7 +48,6 @@ void Water::Draw()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0, 0, -5.2);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -64,10 +63,10 @@ void Water::Draw()
 
 void Water::EditHeight(float disp)
 {
-	vertices[0][1] = -0x40000 + (disp * (0x40000 / 5));
-	vertices[1][1] = -0x40000 + (disp * (0x40000 / 5));
-	vertices[2][1] = -0x40000 + (disp * (0x40000 / 5));
-	vertices[3][1] = -0x40000 + (disp * (0x40000 / 5));
+	vertices[0][1] = -0x40000 + (disp * (0x40000 / 3));
+	vertices[1][1] = -0x40000 + (disp * (0x40000 / 3));
+	vertices[2][1] = -0x40000 + (disp * (0x40000 / 3));
+	vertices[3][1] = -0x40000 + (disp * (0x40000 / 3));
 }
 
 void Water::SetPosition(int res, int xPos, int zPos)

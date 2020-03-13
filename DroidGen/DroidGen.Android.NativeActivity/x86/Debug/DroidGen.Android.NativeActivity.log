@@ -2,5 +2,13 @@
   ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Apps\apache-ant-1.9.3
   JAVA_HOME=C:\Program Files\Android\jdk\microsoft_dist_openjdk_1.8.0.25
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r15c
-  main.cpp
+  Terrain.cpp
+  In file included from C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Terrain.cpp:1:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Terrain.h(34,8): warning : private field 'colors2' is not used [-Wunused-private-field]
+          GLint colors2[256][4] = { { 0x00000, 0x00000, 0x10000, 0x10000,} };
+                ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Terrain.h(35,8): warning : private field 'colors3' is not used [-Wunused-private-field]
+          GLint colors3[256][4] = { { 0x10000, 0x00000, 0x00000, 0x10000,} };
+                ^
+  2 warnings generated.
   DroidGen.Android.NativeActivity.vcxproj -> C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\x86\Debug\libDroidGen.so

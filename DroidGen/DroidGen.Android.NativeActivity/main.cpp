@@ -15,9 +15,6 @@
 *
 */
 
-//#include "glew.h"
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
 
 #include <string>
 #include <fstream>
@@ -28,6 +25,7 @@
 #include "RandomWalk.h"
 #include "ObjectGenerator.h"
 #include "ObjectMarker.h"
+#include "Water.h"
 
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "AndroidProject1.NativeActivity", __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "AndroidProject1.NativeActivity", __VA_ARGS__))
@@ -62,12 +60,12 @@ struct engine {
 	int32_t height;
 	struct saved_state state;
 };
-const int tileCount = 511;
+const int chunkCount = 33;
 std::vector<Terrain> terrains;
 std::vector<ObjectMarker> largeMarkers;
 std::vector<ObjectMarker> smallMarkers;
 std::vector<ObjectMarker> enemyMarkers;
-Terrain water;
+Water water;
 
 PerformanceTool performance;
 PerlinNoise perlin;
@@ -88,6 +86,11 @@ float waterHeight;
 // For performance data
 int perfTimes[250] = { 0 };
 int generationCount = 0;
+
+// Camera variables
+float cameraX = 0;
+float cameraZ = 0;
+float cameraRotation = 0;
 
 const int textureWidth = 512;
 const int textureHeight = 512;
@@ -187,16 +190,25 @@ void WaterTable()
 }
 void ApplyHeights()
 {
-	for (int j = 0; j < tileCount; j++)
-	{
-		for (int i = 0; i < tileCount; i++)
-		{
-			float aDisp = yDisplacement[j * textureWidth + i]; 
-			float bDisp = yDisplacement[j * textureWidth + (i + 1)];
-			float cDisp = yDisplacement[(j + 1) * textureWidth + (i + 1)];
-			float dDisp = yDisplacement[(j + 1) * textureWidth + i];
+	float heights[256];
 
-			terrains[j * tileCount + i].EditHeights(aDisp, bDisp, cDisp, dDisp);
+	// Loop through the chunks
+	for (int j = 0; j < chunkCount; j++)
+	{
+		for (int i = 0; i < chunkCount; i++)
+		{
+
+			int x = i * 16;	int y = j * 16;
+
+			for (int l = 0; l < 16; l++)
+			{
+				for (int k = 0; k < 16; k++)
+				{
+					heights[l * 16 + k] = yDisplacement[(y + l) * textureWidth + (x + k)];
+				}
+			}
+
+			terrains[j * chunkCount + i].EditHeights(heights);
 		}
 	}
 }
@@ -218,7 +230,7 @@ void PlaceObjects()
 			int posX = largeObjectData[currentElem + 2]; int posZ = largeObjectData[currentElem + 3];
 			int posY = yDisplacement[posZ * textureWidth + posX];
 
-			largeMarkers[i].SetPosition(0, tileCount, sizeX, sizeY, sizeZ, posX, posY, posZ);
+			largeMarkers[i].SetPosition(0, textureWidth, sizeX, sizeY, sizeZ, posX, posY, posZ);
 			largeMarkers[i].SetActive(true);
 		}
 		currentElem += 4;
@@ -236,7 +248,7 @@ void PlaceObjects()
 			int posX = smallObjectData[currentElem]; int posZ = smallObjectData[currentElem + 1];
 			int posY = yDisplacement[posZ * textureWidth + posX] + 5;
 
-			smallMarkers[i].SetPosition(1, tileCount, 8, 8, 8, posX, posY, posZ);
+			smallMarkers[i].SetPosition(1, textureWidth, 8, 8, 8, posX, posY, posZ);
 			smallMarkers[i].SetActive(true);
 		}
 		currentElem += 2;
@@ -254,7 +266,7 @@ void PlaceObjects()
 			int posX = enemyData[currentElem]; int posZ = enemyData[currentElem + 1];
 			int posY = yDisplacement[posZ * textureWidth + posX] + 5;
 
-			enemyMarkers[i].SetPosition(2, tileCount, 8, 8, 8, posX, posY, posZ);
+			enemyMarkers[i].SetPosition(2, textureWidth, 8, 8, 8, posX, posY, posZ);
 			enemyMarkers[i].SetActive(true);
 		}
 		currentElem += 2;
@@ -357,15 +369,17 @@ static int engine_init_display(struct engine* engine) {
 	glDisable(GL_DITHER);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
-	glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
+
 
 	glViewport(0, 0, w, h);
 	GLfloat ratio = (GLfloat)w / h;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glFrustumf(-ratio, ratio, -1, 1, 1, 10);
+	glTranslatef(0, 0, 0);
+	glFrustumf(-ratio, ratio, -1, 1, 0.5, 20);
 
 	return 0;
 }
@@ -381,9 +395,9 @@ static void engine_draw_frame(struct engine* engine) {
 	}
 
 	// Prepare
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
-	for (int i = 0; i < tileCount * tileCount; i++)
+	for (int i = 0; i < chunkCount * chunkCount; i++)
 	{
 		terrains[i].Draw();
 	}
@@ -535,29 +549,29 @@ void android_main(struct android_app* state) {
 		engine.state = *(struct saved_state*)state->savedState;
 	}
 
-	for (int j = 0; j < tileCount; j++)
+	for (int j = 0; j < chunkCount; j++)
 	{
-		for (int i = 0; i < tileCount; i++)
+		for (int i = 0; i < chunkCount; i++)
 		{
-			Terrain* tile = new Terrain(tileCount, i, j);
+			Terrain* tile = new Terrain(textureWidth, i, j);
 			terrains.push_back(*tile);
 		}
 	}
 	for (int i = 0; i < 10; i++)
 	{
-		ObjectMarker* marker = new ObjectMarker(0, 511, 32, 16, 32, 112, 0, 112);
+		ObjectMarker* marker = new ObjectMarker(0, textureWidth, 32, 16, 32, 112, 0, 112);
 		marker->SetActive(false);
 		largeMarkers.push_back(*marker);
 	}
 	for (int i = 0; i < 15; i++)
 	{
-		ObjectMarker* marker = new ObjectMarker(1, 511, 8, 8, 8, 112, 0, 112);
+		ObjectMarker* marker = new ObjectMarker(1, textureWidth, 8, 8, 8, 112, 0, 112);
 		marker->SetActive(false);
 		smallMarkers.push_back(*marker);
 	}
 	for (int i = 0; i < 15; i++)
 	{
-		ObjectMarker* marker = new ObjectMarker(2, 511, 8, 8, 8, 112, 0, 112);
+		ObjectMarker* marker = new ObjectMarker(2, textureWidth, 8, 8, 8, 112, 0, 112);
 		marker->SetActive(false);
 		enemyMarkers.push_back(*marker);
 	}
@@ -567,6 +581,7 @@ void android_main(struct android_app* state) {
 	engine.animating = 1;
 
 	// loop waiting for stuff to do.
+	GenerateLevel();
 
 	while (1) {
 		// Read all pending events.
@@ -607,17 +622,13 @@ void android_main(struct android_app* state) {
 
 		
 
-		//GenerateLevel();
-
 		if (engine.animating) {
 			// Done with events; draw next animation frame.
 
-			// Call generation
-			// To be moved to tap event
-			GenerateLevel();
+			cameraRotation += 0.05;
 			
 			// Call update functions
-			for (int i = 0; i < tileCount * tileCount; i++)
+			for (int i = 0; i < chunkCount * chunkCount; i++)
 				terrains[i].Update();
 			for (int i = 0; i < 10; i++)
 				largeMarkers[i].Update();

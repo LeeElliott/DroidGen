@@ -468,13 +468,13 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 			 // Horizontal neighbours
 			 float x1 = (x - (w / 2)) + (i - 1);
 			 float x2 = (x - (w / 2)) + (i + 1);
-			 float y1 = heights[(x - (w / 2)) + (i - 1)];
-			 float y2 = heights[(x - (w / 2)) + (i + 1)];
+			 float y1 = heights[(y - (h / 2) + j) * tw + (x - (h / 2) + (i - 1))];
+			 float y2 = heights[(y - (h / 2) + j) * tw + (x - (h / 2) + (i + 1))];
 			 // Vertical neighbours
 			 float x3 = (y - (h / 2)) + (j - 1);
 			 float x4 = (y - (h / 2)) + (j + 1);
-			 float y3 = heights[(y - (h / 2)) + (j - 1)];
-			 float y4 = heights[(y - (h / 2)) + (j + 1)];
+			 float y3 = heights[(y - (h / 2) + (j - 1)) * tw + (x - (h / 2) + i)];
+			 float y4 = heights[(y - (h / 2) + (j + 1)) * tw + (x - (h / 2) + i)];
 
 			 // Get terrain angle in degrees
 			 float angleX = atan2(y2 - y1, x2 - x1) * 180 / 3.14159265;
@@ -497,7 +497,7 @@ void ObjectGenerator::GenerateObjects(int(&map)[262144], float(&heights)[262144]
 
 			 // If value is anything other than that of un-walkable
 			 // or position is out of bounds
-			 if (map[coordinate] != 1 || x - (width / 2) < 1 || x + (width / 2) > tw ||
+			 if (map[coordinate] != 1 || heights[coordinate] <= water ||x - (width / 2) < 1 || x + (width / 2) > tw ||
 				 y - (height / 2) < 1 || y + (height / 2) > th)
 			 {
 				 // Check failed

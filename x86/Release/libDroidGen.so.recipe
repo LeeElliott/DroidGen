@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <SOLibPaths>C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\x86\Release\libDroidGen.so;C:\Microsoft\AndroidNDK64\android-ndk-r15c\prebuilt\android-x86\gdbserver\gdbserver;C:\Microsoft\AndroidNDK64\android-ndk-r15c\sources\cxx-stl\gnu-libstdc++\4.9\libs\x86\libgnustl_static.a</SOLibPaths>
+  <AndroidLibPaths />
+  <OObjPaths>C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Android.NativeActivity\x86\Release</OObjPaths>
+  <Configuration>Release</Configuration>
+  <Platform>x86</Platform>
+  <AndroidArchitecture>x86</AndroidArchitecture>
+  <!--links to other recipe files-->
+  <RecipeFiles />
+</project>

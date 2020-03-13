@@ -14,16 +14,16 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Button.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectMarker.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerlinNoise.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RandomWalk.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCalculator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector3.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Water.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Button.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectMarker.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Terrain.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectGenerator.h" />
@@ -31,5 +31,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PerlinNoise.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RandomWalk.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCalculator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Water.h" />
   </ItemGroup>
 </Project>

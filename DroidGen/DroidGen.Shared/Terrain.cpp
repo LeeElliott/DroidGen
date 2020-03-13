@@ -8,29 +8,10 @@ Terrain::Terrain()
 	
 }
 
-Terrain::Terrain(int res, int xPos, int yPos)
+Terrain::Terrain(int res, int xPos, int zPos)
 {
 	// Get the offset value
-	float off = (2 * limit) / res;
-
-	// Set x and z position
-	vertices[0][0] = -limit + (xPos * off);
-	vertices[0][1] = -limit;
-	vertices[0][2] = -limit + (yPos * off);
-
-	vertices[1][0] = -limit + ((xPos + 1) * off);
-	vertices[1][1] = -limit;
-	vertices[1][2] = -limit + (yPos * off);
-
-	vertices[2][0] = -limit + ((xPos + 1) * off);
-	vertices[2][1] = -limit;
-	vertices[2][2] = -limit + ((yPos + 1) * off);
-
-	vertices[3][0] = -limit + (xPos * off);
-	vertices[3][1] = -limit;
-	vertices[3][2] = -limit + ((yPos + 1) * off);
-
-	indices[0] = 0; indices[1] = 1; indices[2] = 2; indices[3] = 3; indices[4] = 0; indices[5] = 2;
+	SetPosition(res, xPos, zPos);	
 }
 
 Terrain::~Terrain()
@@ -71,9 +52,6 @@ void Terrain::Draw()
 {
 	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0, 0, -8.0f);
-	//glRotatef(_rotation * 0.25f, 0, 1, 0); // Y
-    glRotatef(0.5f, 0, 0, 1);  // Z
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
@@ -81,53 +59,53 @@ void Terrain::Draw()
     glFrontFace(GL_CW);
     glVertexPointer(3, GL_FIXED, 0, vertices);
     glColorPointer(4, GL_FIXED, 0, colors);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices);
-	
+	glDrawElements(GL_TRIANGLES, 1350, GL_UNSIGNED_BYTE, indices);
 }
 
-void Terrain::EditHeight(float disp)
+void Terrain::EditHeights(float(&heights)[256])
 {
-	vertices[0][1] = -limit + (disp * (limit / 5));
-	vertices[1][1] = -limit + (disp * (limit / 5));
-	vertices[2][1] = -limit + (disp * (limit / 5));
-	vertices[3][1] = -limit + (disp * (limit / 5));
-
-	colors[0][2] = 0x10000;
-	colors[1][2] = 0x10000;
-	colors[2][2] = 0x10000;
-	colors[3][2] = 0x10000;
+	for (int i = 0; i < 256; i++)
+	{
+		vertices[i][1] = -limit + (heights[i] * (limit / 5));
+		colors[0][1] = 0x10000 * heights[i];
+	}	
 }
 
-void Terrain::EditHeights(float aDisp, float bDisp, float cDisp, float dDisp)
-{
-	vertices[0][1] = -limit +(aDisp * (limit / 5));
-	vertices[1][1] = -limit +(bDisp * (limit / 5));
-	vertices[2][1] = -limit +(cDisp * (limit / 5));
-	vertices[3][1] = -limit +(dDisp * (limit / 5));
-
-	colors[0][1] = 0x10000 * aDisp;
-	colors[1][1] = 0x10000 * bDisp;
-	colors[2][1] = 0x10000 * cDisp;
-	colors[3][1] = 0x10000 * dDisp;
-}
-
-void Terrain::SetPosition(int res, int xPos, int yPos)
+void Terrain::SetPosition(int res, int xPos, int zPos)
 {
 	// Get the offset value
 	float off = (2 * limit) / res;
+	myX = xPos * 15;
+	myZ = zPos * 15;
+	
+	int n = 0;
+	for (int j = 0; j < 16; j++)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			vertices[j * 16 + i][0] = -limit + ((myX + i) * off);
+			vertices[j * 16 + i][1] = -limit;
+			vertices[j * 16 + i][2] = -limit + ((myZ + j) * off);	
 
-	// Set x and z position
-	vertices[0][0] = -limit + (xPos * off);
-	vertices[0][2] = -limit + (yPos * off);
-
-	vertices[1][0] = -limit + ((xPos + 1) * off);
-	vertices[1][2] = -limit + (yPos * off);
-
-	vertices[2][0] = -limit + ((xPos + 1) * off);
-	vertices[2][2] = -limit + ((yPos + 1) * off);
-
-	vertices[3][0] = -limit + (xPos * off);
-	vertices[3][2] = -limit + ((yPos + 1) * off);
-
-	indices[0] = 0; indices[1] = 1; indices[2] = 2; indices[3] = 3; indices[4] = 0; indices[5] = 2;
+			colors[j * 16 + i][0] = 0x00000;
+			colors[j * 16 + i][1] = 0x10000;
+			colors[j * 16 + i][2] = 0x00000;
+			colors[j * 16 + i][3] = 0x10000;
+		}
+	}
+	
+	for (int j = 0; j < 15; j++)
+	{
+		for (int i = 0; i < 15; i++)
+		{
+			indices[n] = j * 16 + i;
+			indices[n + 1] = j * 16 + (i + 1);
+			indices[n + 2] = (j + 1) * 16 + i;
+					
+			indices[n + 3] = (j + 1) * 16 + (i + 1);
+			indices[n + 4] = j * 16 + i;
+			indices[n + 5] = (j + 1) * 16 + i;
+			n += 6;
+		}
+	}
 }

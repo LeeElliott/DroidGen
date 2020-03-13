@@ -24,21 +24,18 @@ public:
 	void Update();
 	void Prepare();
 	void Draw();
-	void EditHeight(float disp);
-	void EditHeights(float aDisp, float bDisp, float cDisp, float dDisp);
-	void SetPosition(int resolution, int xPos, int yPos);
+	void EditHeights(float(&heights)[256]);
+	void SetPosition(int resolution, int xPos, int zPos);
 	GLint GetPosition(int a, int b) { return vertices[a][b]; }
 
 private:
-	GLint vertices[4][3];
-	GLint colors[4][4] =
-	{
-		{ 0x00000, 0x00000, 0x00000, 0x10000 },
-		{ 0x00000, 0x00000, 0x00000, 0x10000 },
-		{ 0x00000, 0x00000, 0x00000, 0x10000 },
-		{ 0x00000, 0x00000, 0x00000, 0x10000 }
-	};
-	GLubyte indices[6];
+	GLint vertices[256][3];
+	GLint colors[256][4] = { { 0x00000, 0x10000, 0x00000, 0x10000,} };
+	GLint colors2[256][4] = { { 0x00000, 0x00000, 0x10000, 0x10000,} };
+	GLint colors3[256][4] = { { 0x10000, 0x00000, 0x00000, 0x10000,} };
+	GLubyte indices[1350];
+	
+	int myX; int myZ;
 };
 
 

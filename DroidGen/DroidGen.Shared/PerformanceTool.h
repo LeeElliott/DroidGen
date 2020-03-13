@@ -7,9 +7,9 @@ public:
 	inline void StartTimer() { timeStart = std::chrono::steady_clock::now(); }
 	void EndTimer() { timeEnd = std::chrono::steady_clock::now(); }
 
-	auto GetSeconds() 
+	int GetSeconds() 
 	{ 
-		auto countedTime = std::chrono::duration_cast<std::chrono::milliseconds>(timeEnd - timeStart).count();
+		int countedTime = std::chrono::duration_cast<std::chrono::milliseconds>(timeEnd - timeStart).count();
 		return countedTime; 
 	}
 

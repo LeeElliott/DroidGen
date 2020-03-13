@@ -19,9 +19,6 @@
 #include <GLES/gl.h>
 
 
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
-
 #include <android/sensor.h>
 
 #include <android/log.h>

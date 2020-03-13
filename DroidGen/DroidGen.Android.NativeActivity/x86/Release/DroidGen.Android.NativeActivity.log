@@ -1,0 +1,112 @@
+﻿  ANDROID_HOME=C:\ProgramData\Microsoft\AndroidSDK\25
+  ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Apps\apache-ant-1.9.3
+  JAVA_HOME=C:\Program Files\Android\jdk\microsoft_dist_openjdk_1.8.0.25
+  NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r15c
+  pch.h
+  Button.cpp
+  In file included from C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Button.cpp:1:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Button.h(22,17): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          bool isPressed = false;
+                         ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Button.h(22,7): warning : private field 'isPressed' is not used [-Wunused-private-field]
+          bool isPressed = false;
+               ^
+  2 warnings generated.
+  ObjectMarker.cpp
+  In file included from C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\ObjectMarker.cpp:1:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/ObjectMarker.h(35,21): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors[8][4] =
+                             ^
+  1 warning generated.
+  Terrain.cpp
+  In file included from C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Terrain.cpp:1:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Terrain.h(33,23): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors[256][4] = { { 0x00000, 0x10000, 0x00000, 0x10000,} };
+                               ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Terrain.h(34,24): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors2[256][4] = { { 0x00000, 0x00000, 0x10000, 0x10000,} };
+                                ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Terrain.h(35,24): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors3[256][4] = { { 0x10000, 0x00000, 0x00000, 0x10000,} };
+                                ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Terrain.h(34,8): warning : private field 'colors2' is not used [-Wunused-private-field]
+          GLint colors2[256][4] = { { 0x00000, 0x00000, 0x10000, 0x10000,} };
+                ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Terrain.h(35,8): warning : private field 'colors3' is not used [-Wunused-private-field]
+          GLint colors3[256][4] = { { 0x10000, 0x00000, 0x00000, 0x10000,} };
+                ^
+  5 warnings generated.
+  ObjectGenerator.cpp
+  PerlinNoise.cpp
+  RandomWalk.cpp
+  TextureCalculator.cpp
+  Water.cpp
+  In file included from C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Water.cpp:1:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\/Water.h(34,21): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors[4][4] =
+                             ^
+  1 warning generated.
+  android_native_app_glue.c
+  main.cpp
+  In file included from main.cpp:22:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Terrain.h(33,23): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors[256][4] = { { 0x00000, 0x10000, 0x00000, 0x10000,} };
+                               ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Terrain.h(34,24): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors2[256][4] = { { 0x00000, 0x00000, 0x10000, 0x10000,} };
+                                ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Terrain.h(35,24): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors3[256][4] = { { 0x10000, 0x00000, 0x00000, 0x10000,} };
+                                ^
+  In file included from main.cpp:23:
+  In file included from C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h:2:
+  In file included from C:\\Microsoft\AndroidNDK64\android-ndk-r15c\sources\cxx-stl\gnu-libstdc++\4.9\include\chrono:35:
+C:\\Microsoft\AndroidNDK64\android-ndk-r15c\sources\cxx-stl\gnu-libstdc++\4.9\include\bits/c++0x_warning.h(32,2): error : This file requires compiler and library support for the ISO C++ 2011 standard. This support is currently experimental, and must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+  #error This file requires compiler and library support for the \
+   ^
+  In file included from main.cpp:23:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(17,7): error : no member named 'chrono' in namespace 'std'
+          std::chrono::time_point<std::chrono::steady_clock> timeStart;
+          ~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(17,25): error : expected member name or ';' after declaration specifiers
+          std::chrono::time_point<std::chrono::steady_clock> timeStart;
+          ~~~~~~~~~~~~~~~~~~~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(18,7): error : no member named 'chrono' in namespace 'std'
+          std::chrono::time_point<std::chrono::steady_clock> timeEnd;
+          ~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(18,25): error : expected member name or ';' after declaration specifiers
+          std::chrono::time_point<std::chrono::steady_clock> timeEnd;
+          ~~~~~~~~~~~~~~~~~~~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(7,29): error : use of undeclared identifier 'timeStart'
+          inline void StartTimer() { timeStart = std::chrono::steady_clock::now(); }
+                                     ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(7,46): error : no member named 'chrono' in namespace 'std'
+          inline void StartTimer() { timeStart = std::chrono::steady_clock::now(); }
+                                                 ~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(8,20): error : use of undeclared identifier 'timeEnd'
+          void EndTimer() { timeEnd = std::chrono::steady_clock::now(); }
+                            ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(8,35): error : no member named 'chrono' in namespace 'std'
+          void EndTimer() { timeEnd = std::chrono::steady_clock::now(); }
+                                      ~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(12,26): error : no member named 'chrono' in namespace 'std'
+                  int countedTime = std::chrono::duration_cast<std::chrono::milliseconds>(timeEnd - timeStart).count();
+                                    ~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(12,53): error : no member named 'chrono' in namespace 'std'
+                  int countedTime = std::chrono::duration_cast<std::chrono::milliseconds>(timeEnd - timeStart).count();
+                                                               ~~~~~^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(12,75): error : use of undeclared identifier 'timeEnd'
+                  int countedTime = std::chrono::duration_cast<std::chrono::milliseconds>(timeEnd - timeStart).count();
+                                                                                          ^
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\PerformanceTool.h(12,85): error : use of undeclared identifier 'timeStart'
+                  int countedTime = std::chrono::duration_cast<std::chrono::milliseconds>(timeEnd - timeStart).count();
+                                                                                                    ^
+  In file included from main.cpp:27:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\ObjectMarker.h(35,21): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors[8][4] =
+                             ^
+  In file included from main.cpp:28:
+C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\DroidGen\DroidGen.Shared\Water.h(34,21): warning : in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+          GLint colors[4][4] =
+                             ^
+  5 warnings and 13 errors generated.

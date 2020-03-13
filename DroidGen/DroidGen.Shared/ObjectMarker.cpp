@@ -51,9 +51,7 @@ void ObjectMarker::Draw()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0, 0, -8.0f);
-	//glRotatef(rotation * 0.25f, 0, 1, 0); // Y
-	glRotatef(0.5f, 0, 0, 1);  // Z
+	glTranslatef(0, 0, -5.2);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);

@@ -16,11 +16,16 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCalculator.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Terrain.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Button.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectMarker.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectMarker.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Water.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Terrain.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector3.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -45,11 +50,16 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCalculator.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Button.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObjectMarker.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ObjectMarker.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Water.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector3.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

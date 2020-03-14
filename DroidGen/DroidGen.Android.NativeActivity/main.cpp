@@ -201,7 +201,7 @@ void ApplyHeights()
 		for (int i = 0; i < chunkCount; i++)
 		{
 
-			int x = i * 16;	int y = j * 16;
+			int x = i * 15;	int y = j * 15;
 
 			for (int l = 0; l < 16; l++)
 			{
@@ -382,7 +382,6 @@ static int engine_init_display(struct engine* engine) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glTranslatef(cameraX, cameraY, cameraZ);
-	/*glRotatef(cameraRotation, 0, 1, 0);*/
 	glFrustumf(-ratio, ratio, -1, 1, 0.5, 20);
 
 	return 0;

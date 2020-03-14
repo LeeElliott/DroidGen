@@ -52,6 +52,7 @@ void Terrain::Draw()
 {
 	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+	glTranslatef(0, 0, -6.0);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
@@ -69,15 +70,26 @@ void Terrain::EditHeights(float(&heights)[256], float path)
 	{
 		vertices[i][1] = -limit + (heights[i] * (limit / 3));
 
-		if (heights[i] <= path)
+		if (heights[i] == path)
 		{
-			colors[0][0] = 0xA500 * heights[i];
-			colors[0][1] = 0x2A00 * heights[i];
-			colors[0][2] = 0x2A00 * heights[i];
+			colors[i][0] = 0x9696;
+			colors[i][1] = 0x4B00;
+			colors[i][2] = 0x00000;
+			colors[i][3] = 0x10000;
+		}
+		else if (heights[i] < path)
+		{
+			colors[i][0] = 0x9696 + (304 * (path - heights[i]));
+			colors[i][1] = 0x4B00 + (0xB500 * (path - heights[i]));
+			colors[i][2] = 0x00000;
+			colors[i][3] = 0x10000;
 		}
 		else
 		{
-			colors[0][1] = 0x10000 * heights[i];
+			colors[i][0] = 0x00000;
+			colors[i][1] = 0x10000 * (heights[i]);
+			colors[i][2] = 0x00000;
+			colors[i][3] = 0x10000;
 		}
 	}	
 }

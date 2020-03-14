@@ -31,8 +31,6 @@ public:
 private:
 	GLint vertices[256][3];
 	GLint colors[256][4] = { { 0x00000, 0x10000, 0x00000, 0x10000,} };
-	GLint colors2[256][4] = { { 0x00000, 0x00000, 0x10000, 0x10000,} };
-	GLint colors3[256][4] = { { 0x10000, 0x00000, 0x00000, 0x10000,} };
 	GLubyte indices[1350];
 	
 	int myX; int myZ;

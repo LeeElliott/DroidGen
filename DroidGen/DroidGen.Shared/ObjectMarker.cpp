@@ -47,11 +47,11 @@ void ObjectMarker::Prepare()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void ObjectMarker::Draw()
+void ObjectMarker::Draw(float x, float y, float z)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0, 0, -6.0);
+	glTranslatef(x, y, z);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -89,45 +89,42 @@ void ObjectMarker::EditHeights(float aDisp, float bDisp, float cDisp, float dDis
 	colors[3][1] = 0x10000 * dDisp;
 }
 
-void ObjectMarker::SetPosition(int type, int res, int sizeX, int sizeY, int sizeZ, int xPos, int yPos, int zPos)
+void ObjectMarker::SetPosition(int type, int res, int sizeX, int sizeY, int sizeZ, int xPos, float yPos, int zPos)
 {
 	// Get the offset value
-	float off = (2 * limits) / res;
+	float off = (2 * limits) / res;	
 	
-	// TEMPORARY
-	sizeY = 64;
-
 	// Set x and z position
 	vertices[0][0] = -limits + ((xPos - (sizeX / 2)) * off);
-	vertices[0][1] = -limits + (yPos * off);
+	vertices[0][1] = -limits + (yPos * (limits / 3));
 	vertices[0][2] = -limits + ((zPos - (sizeZ / 2)) * off);
 
 	vertices[1][0] = -limits + ((xPos + (sizeX / 2)) * off);
-	vertices[1][1] = -limits + (yPos * off);
+	vertices[1][1] = -limits + (yPos * (limits / 3));
 	vertices[1][2] = -limits + ((zPos - (sizeZ / 2)) * off);
 
 	vertices[2][0] = -limits + ((xPos + (sizeX / 2)) * off);
-	vertices[2][1] = -limits + (yPos * off);
+	vertices[2][1] = -limits + (yPos * (limits / 3));
 	vertices[2][2] = -limits + ((zPos + (sizeZ / 2)) * off);
 
 	vertices[3][0] = -limits + ((xPos - (sizeX / 2)) * off);
-	vertices[3][1] = -limits + (yPos * off);
+	vertices[3][1] = -limits + (yPos * (limits / 3));
 	vertices[3][2] = -limits + ((zPos + (sizeZ / 2)) * off);
 
 	vertices[4][0] = -limits + ((xPos - (sizeX / 2)) * off);
-	vertices[4][1] = -limits + ((yPos + sizeY) * off);
+	vertices[4][1] = -limits + (yPos * (limits / 3) + (sizeY * off));
 	vertices[4][2] = -limits + ((zPos - (sizeZ / 2)) * off);
 
 	vertices[5][0] = -limits + ((xPos + (sizeX / 2)) * off);
-	vertices[5][1] = -limits + ((yPos + sizeY) * off);
+	vertices[5][1] = -limits + (yPos * (limits / 3) + (sizeY * off));
 	vertices[5][2] = -limits + ((zPos - (sizeZ / 2)) * off);
 
 	vertices[6][0] = -limits + ((xPos + (sizeX / 2)) * off);
-	vertices[6][1] = -limits + ((yPos + sizeY) * off);
+	vertices[6][1] = -limits + (yPos * (limits / 3) + (sizeY * off));
 	vertices[6][2] = -limits + ((zPos + (sizeZ / 2)) * off);
 
 	vertices[7][0] = -limits + ((xPos - (sizeX / 2)) * off);
-	vertices[7][1] = -limits + ((yPos + sizeY) * off);
+	vertices[7][1] = -limits + (yPos * (limits / 3) + (sizeY * off));
 	vertices[7][2] = -limits + ((zPos + (sizeZ / 2)) * off);
 
 	indices[0] = 1;		indices[1] = 0;		indices[2] = 2;		indices[3] = 2;		indices[4] = 0;		indices[5] = 3;

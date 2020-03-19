@@ -1,0 +1,6 @@
+﻿  ANDROID_HOME=C:\ProgramData\Microsoft\AndroidSDK\25
+  ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Apps\apache-ant-1.9.3
+  JAVA_HOME=C:\Program Files\Android\jdk\microsoft_dist_openjdk_1.8.0.25
+  NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r15c
+  main.cpp
+  DroidGen.Android.NativeActivity.vcxproj -> C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\ARM64\Debug\libDroidGen.so

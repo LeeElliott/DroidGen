@@ -90,10 +90,13 @@ int perfTimes[250] = { 0 };
 int generationCount = 0;
 
 // Camera variables
-float cameraX = 0;
-float cameraY = 0;
-float cameraZ = 0;
-float cameraRotation = 0;
+float cameraX = -3.0;
+float cameraY = 2;
+float cameraZ = -5.0;
+int direction = 0;
+float nextZ = 0.235;
+bool forward = true;
+bool right = true;
 
 const int textureWidth = 512;
 const int textureHeight = 512;
@@ -229,9 +232,9 @@ void PlaceObjects()
 		}
 		else
 		{
-			int sizeX = largeObjectData[currentElem]; int sizeY = 32; int sizeZ = largeObjectData[currentElem + 1];
+			int sizeX = largeObjectData[currentElem]; int sizeY = 64; int sizeZ = largeObjectData[currentElem + 1];
 			int posX = largeObjectData[currentElem + 2]; int posZ = largeObjectData[currentElem + 3];
-			int posY = yDisplacement[posZ * textureWidth + posX];
+			float posY = yDisplacement[posZ * textureWidth + posX] * 0.5;
 
 			largeMarkers[i].SetPosition(0, textureWidth, sizeX, sizeY, sizeZ, posX, posY, posZ);
 			largeMarkers[i].SetActive(true);
@@ -249,9 +252,9 @@ void PlaceObjects()
 		else
 		{
 			int posX = smallObjectData[currentElem]; int posZ = smallObjectData[currentElem + 1];
-			int posY = yDisplacement[posZ * textureWidth + posX] + 5;
+			float posY = yDisplacement[posZ * textureWidth + posX];
 
-			smallMarkers[i].SetPosition(1, textureWidth, 8, 8, 8, posX, posY, posZ);
+			smallMarkers[i].SetPosition(1, textureWidth, 8, 32, 8, posX, posY, posZ);
 			smallMarkers[i].SetActive(true);
 		}
 		currentElem += 2;
@@ -267,9 +270,9 @@ void PlaceObjects()
 		else
 		{
 			int posX = enemyData[currentElem]; int posZ = enemyData[currentElem + 1];
-			int posY = yDisplacement[posZ * textureWidth + posX] + 5;
+			float posY = yDisplacement[posZ * textureWidth + posX];
 
-			enemyMarkers[i].SetPosition(2, textureWidth, 8, 8, 8, posX, posY, posZ);
+			enemyMarkers[i].SetPosition(2, textureWidth, 8, 32, 8, posX, posY, posZ);
 			enemyMarkers[i].SetActive(true);
 		}
 		currentElem += 2;
@@ -283,6 +286,12 @@ void GenerateLevel()
 	memset(smallObjectData, 0, sizeof(smallObjectData));
 	memset(enemyData, 0, sizeof(enemyData));
 
+	// Reset camera position (optional)
+	cameraZ = -5.0;
+	cameraX = -3.0;
+	right = true;
+	forward = true;
+
 	performance.StartTimer();
 
 	CreateMap();
@@ -295,18 +304,117 @@ void GenerateLevel()
 
 	performance.EndTimer();
 
-	if (generationCount < 250)
+	if (generationCount < 30)
 	{
 		perfTimes[generationCount] = performance.GetSeconds();
 		generationCount++;
 	}
-	else
-	{
-		generationCount = 900;
-	}
 
 	// Update level status
 	levelStatus = "Generation complete...";
+}
+
+void CameraUpdate()
+{
+	// Move camera
+	switch (direction)
+	{
+	case 0:
+		if (cameraX < 3)
+		{
+			cameraX += 0.034;
+		}
+		else
+		{
+			if (forward)
+				direction = 2;
+			else
+				direction = 3;
+
+			right = false;
+		}
+		break;
+	case 1:
+		if (cameraX > -3)
+		{
+			cameraX -= 0.034;
+		}
+		else
+		{
+			if (forward)
+				direction = 2;
+			else
+				direction = 3;
+
+			right = true;
+		}
+		break;
+	case 2:
+		if (cameraZ < nextZ)
+		{
+			cameraZ += 0.025;
+		}
+		else
+		{
+			if (nextZ < 2.0)
+			{
+				nextZ += 0.235;
+			}
+			else
+			{
+				forward = false;
+				nextZ -= 0.235;
+			}
+
+			if (right)
+				direction = 0;
+			else
+				direction = 1;
+		}
+		break;
+	case 3:
+		if (cameraZ > nextZ)
+		{
+			cameraZ -= 0.025;
+		}
+		else
+		{
+			if (nextZ > -4.0)
+			{
+				nextZ -= 0.235;
+			}
+			else
+			{
+				forward = true;
+				nextZ += 0.235;
+			}
+
+			if (right)
+				direction = 0;
+			else
+				direction = 1;
+		}
+		break;
+	}
+
+	
+	int maxX = 34 - ((cameraX + 3) / 0.17647) + 12; int minX = maxX - 24;
+	int maxZ = 34 - ((cameraZ + 5) / 0.23529) + 2;	int minZ = maxZ - 16;
+
+	for (int j = 0; j < chunkCount; j++)
+	{
+		for (int i = 0; i < chunkCount; i++)
+		{
+			if (i > minX && i < maxX && j > minZ && j < maxZ)
+			{
+				terrains[j * chunkCount + i].SetVisible(true);
+			}
+			else
+			{
+				terrains[j * chunkCount + i].SetVisible(false);
+			}
+		}
+	}
 }
 
 /**
@@ -375,14 +483,15 @@ static int engine_init_display(struct engine* engine) {
 	glDisable(GL_CULL_FACE);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_EQUAL);
 
 
 	glViewport(0, 0, w, h);
-	GLfloat ratio = (GLfloat)w / h;
+	GLfloat ratio = (GLfloat)h / w;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glTranslatef(cameraX, cameraY, cameraZ);
-	glFrustumf(-ratio, ratio, -1, 1, 0.5, 20);
+	//glTranslatef(cameraX, cameraY, cameraZ);
+	glFrustumf(ratio, -ratio, -1, 1, 0.5, 3);
 
 	return 0;
 }
@@ -400,33 +509,34 @@ static void engine_draw_frame(struct engine* engine) {
 	// Prepare
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	water.Draw(cameraX, cameraY, cameraZ);
+
 	for (int i = 0; i < chunkCount * chunkCount; i++)
 	{
-		terrains[i].Draw();
+		if (terrains[i].GetVisible())
+			terrains[i].Draw(cameraX, cameraY, cameraZ);
 	}
 	for (int i = 0; i < 10; i++)
 	{
 		if (largeMarkers[i].GetActive())
 		{
-			largeMarkers[i].Draw();
+			largeMarkers[i].Draw(cameraX, cameraY, cameraZ);
 		}
 	}
 	for (int i = 0; i < 15; i++)
 	{
 		if (smallMarkers[i].GetActive())
 		{
-			smallMarkers[i].Draw();
+			smallMarkers[i].Draw(cameraX, cameraY, cameraZ);
 		}
 	}
 	for (int i = 0; i < 15; i++)
 	{
 		if (enemyMarkers[i].GetActive())
 		{
-			enemyMarkers[i].Draw();
+			enemyMarkers[i].Draw(cameraX, cameraY, cameraZ);
 		}
 	}
-
-	water.Draw();
 
 	eglSwapBuffers(engine->display, engine->surface);
 }
@@ -589,7 +699,7 @@ void android_main(struct android_app* state) {
 	engine.animating = 1;
 
 	// loop waiting for stuff to do.
-	//GenerateLevel();
+	GenerateLevel();
 
 	while (1) {
 		// Read all pending events.
@@ -633,18 +743,30 @@ void android_main(struct android_app* state) {
 		if (engine.animating) {
 			// Done with events; draw next animation frame.
 
-			cameraRotation += 0.05;
-			
-			// Call update functions
-			for (int i = 0; i < chunkCount * chunkCount; i++)
-				terrains[i].Update();
-			for (int i = 0; i < 10; i++)
-				largeMarkers[i].Update();
-			for (int i = 0; i < 15; i++)
-				smallMarkers[i].Update();
-			for (int i = 0; i < 15; i++)
-				enemyMarkers[i].Update();
-			water.Update();
+			if (generationCount < 30)
+			{
+				CameraUpdate();
+
+				// Call update functions
+				for (int i = 0; i < chunkCount * chunkCount; i++)
+					terrains[i].Update();
+				for (int i = 0; i < 10; i++)
+					largeMarkers[i].Update();
+				for (int i = 0; i < 15; i++)
+					smallMarkers[i].Update();
+				for (int i = 0; i < 15; i++)
+					enemyMarkers[i].Update();
+				water.Update();
+			}
+			else
+			{
+				cameraZ = -5.0;
+
+				for (int i = 0; i < chunkCount * chunkCount; i++)
+				{
+					terrains[i].SetVisible(false);
+				}
+			}
 
 			// Drawing is throttled to the screen update rate, so there
 			// is no need to do timing here.

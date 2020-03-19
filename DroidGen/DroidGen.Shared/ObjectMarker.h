@@ -23,10 +23,10 @@ public:
 	void TearDownGL();
 	void Update();
 	void Prepare();
-	void Draw();
+	void Draw(float x, float y, float z);
 	void EditHeight(float disp);
 	void EditHeights(float aDisp, float bDisp, float cDisp, float dDisp);
-	void SetPosition(int type, int res, int sizeX, int sizeY, int sizeZ, int xPos, int yPos, int zPos);
+	void SetPosition(int type, int res, int sizeX, int sizeY, int sizeZ, int xPos, float yPos, int zPos);
 	void SetActive(bool a) { active = a; }
 	bool GetActive() { return active; }
 

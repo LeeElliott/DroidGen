@@ -1,0 +1,1 @@
+$(AntDependencies)=;$(ApplicationId)=applicationId = "";$(ConfigurationType)=application;$(AarDependencies)=;$(AarDependenciesSettings)=;$(ApplicationName)=DroidGen;$(AndroidAppLibName)=DroidGen;$(AndroidBuildToolsVersion)=25.0.3;$(AndroidAPILevelNumber)=21;$(androidapilevel)=android-21;$(projectname)=DroidGen.Android.Packaging;

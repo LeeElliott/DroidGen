@@ -287,10 +287,12 @@ void GenerateLevel()
 	memset(enemyData, 0, sizeof(enemyData));
 
 	// Reset camera position (optional)
-	cameraZ = -5.0;
-	cameraX = -3.0;
-	right = true;
-	forward = true;
+	float cameraX = -3.0;
+	float cameraZ = -5.0;
+	int direction = 0;
+	float nextZ = 0.235;
+	bool forward = true;
+	bool right = true;
 
 	performance.StartTimer();
 
@@ -398,7 +400,7 @@ void CameraUpdate()
 	}
 
 	
-	int maxX = 34 - ((cameraX + 3) / 0.17647) + 12; int minX = maxX - 24;
+	int maxX = 34 - ((cameraX + 3) / 0.17647) + 12; int minX = maxX - 25;
 	int maxZ = 34 - ((cameraZ + 5) / 0.23529) + 2;	int minZ = maxZ - 16;
 
 	for (int j = 0; j < chunkCount; j++)

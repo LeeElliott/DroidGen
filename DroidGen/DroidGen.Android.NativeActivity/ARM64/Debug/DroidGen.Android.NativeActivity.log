@@ -3,4 +3,23 @@
   JAVA_HOME=C:\Program Files\Android\jdk\microsoft_dist_openjdk_1.8.0.25
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r15c
   main.cpp
+main.cpp(291,8): warning : unused variable 'cameraZ' [-Wunused-variable]
+          float cameraZ = -5.0;
+                ^
+main.cpp(293,8): warning : unused variable 'nextZ' [-Wunused-variable]
+          float nextZ = 0.235;
+                ^
+main.cpp(292,6): warning : unused variable 'direction' [-Wunused-variable]
+          int direction = 0;
+              ^
+main.cpp(295,7): warning : unused variable 'right' [-Wunused-variable]
+          bool right = true;
+               ^
+main.cpp(290,8): warning : unused variable 'cameraX' [-Wunused-variable]
+          float cameraX = -3.0;
+                ^
+main.cpp(294,7): warning : unused variable 'forward' [-Wunused-variable]
+          bool forward = true;
+               ^
+  6 warnings generated.
   DroidGen.Android.NativeActivity.vcxproj -> C:\Users\User\Documents\CurrentModules\Honours Project\DroidGen\ARM64\Debug\libDroidGen.so

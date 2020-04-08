@@ -72,9 +72,9 @@ void Terrain::EditHeights(float(&heights)[256], float path)
 
 		if (heights[i] == path)
 		{
-			colors[i][0] = 0x9696;
-			colors[i][1] = 0x4B00;
-			colors[i][2] = 0x00000;
+			colors[i][0] = 0x5000;
+			colors[i][1] = 0x5000;
+			colors[i][2] = 0x5000;
 			colors[i][3] = 0x10000;
 		}
 		else if (heights[i] < path)

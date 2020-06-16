@@ -94,7 +94,7 @@ array and do not intersect a small object location, before being marked.
 The water level is calculated to be only a small percentage lower than the height of the playing area.
 
 ## 3.0 Issues
-There persists an issue with the z-buffer within thus project, which causes objects to erroneously be drawn in front of other objects and also prevents the water from ever being drawn.
+There persists an issue with the z-buffer within this project, which causes objects to erroneously be drawn in front of other objects and also prevents the water from ever being drawn.
 
 ## 4.0 Legal
 The code contained within this repository has been written by and remains the property of Lee Elliott.
